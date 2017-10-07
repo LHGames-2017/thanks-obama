@@ -2,7 +2,7 @@
 
 AI::AI(string playerName_) {
         playerName = playerName_;
-        uri serverURI("http://0.0.0.0:3000/");
+        uri serverURI("http://0.0.0.0:8080/");
         uri_builder builder;
         listener = http_listener(serverURI);
         listener.open().wait();
@@ -119,7 +119,7 @@ void AI::requestHandler(http_request request) {
 
             string gameInfoJsonRaw = bodySplit[1];
 
-            cout << gameInfoJsonRaw << endl;
+            //cout << gameInfoJsonRaw << endl;
 
             vector<string> begin_split = split(gameInfoJsonRaw, "[[");
 
@@ -139,8 +139,22 @@ void AI::requestHandler(http_request request) {
             vector<vector<Tile>> deserialized_map = deserializeMap(customSerializedMap);
 
             // ###  ###
-
+            /*
+            Player player;
             
+            Point position = Point(gameInfoJson["Player"]["Position"]["X"], gameInfoJson["Player"]["Position"]["Y"]);
+            Point houseLocation = Point(gameInfoJson["Player"]["HouseLocation"]["X"], gameInfoJson["Player"]["HouseLocation"]["Y"]);
+
+            player.Health = gameInfoJson["Player"]["Health"];
+            player.MaxHealth = gameInfoJson["Player"]["MaxHealth"];
+            player.CarriedResources = gameInfoJson["Player"]["CarriedResources"];
+            player.CarryingCapacity = gameInfoJson["Player"]["CarryingCapacity"];
+            player.Position = position;
+            player.HouseLocation = houseLocation;
+            player.Score = gameInfoJson["Player"]["Score"];*/
+            Player player;
+            player.parsePlayer(gameInfoJson);
+            player.print();
         }
 
     );

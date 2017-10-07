@@ -5,7 +5,9 @@
 #include <string>
 #include <vector>
 #include <map>
+#include "json.hpp"
 
+using namespace nlohmann;
 using namespace std;
 
 class Tile {
@@ -80,6 +82,20 @@ public:
         CarryingCapacity = carryingCapacity;
     }
 
+    void parsePlayer(json infoJson)
+    {        
+        Point position = Point(infoJson["Player"]["Position"]["X"], infoJson["Player"]["Position"]["Y"]);
+        Point houseLocation = Point(infoJson["Player"]["HouseLocation"]["X"], infoJson["Player"]["HouseLocation"]["Y"]);
+
+        Health = infoJson["Player"]["Health"];
+        MaxHealth = infoJson["Player"]["MaxHealth"];
+        CarriedResources = infoJson["Player"]["CarriedResources"];
+        CarryingCapacity = infoJson["Player"]["CarryingCapacity"];
+        Position = position;
+        HouseLocation = houseLocation;
+        Score = infoJson["Player"]["Score"];
+    }
+
     Player() {}
 
     int Health;
@@ -90,7 +106,15 @@ public:
     Point HouseLocation;
     int Score;
 
-
+    void print() {
+        cout << "---------Player info ---------" << endl;
+        cout << "Health : " << Health << endl;
+        cout << "MaxHealth : " << MaxHealth << endl;
+        cout << "CarriedResources : " << CarriedResources << endl;
+        cout << "Position : " << Position.toString() << endl;
+        cout << "HouseLocation : " << HouseLocation.toString() << endl;
+        cout << "Score : " << Score << endl << flush;      
+    }
 };
 
 enum PurchasableItem {
